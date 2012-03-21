@@ -29,7 +29,7 @@ function [key,latency] = GetKeyFixed(keyStrings, deadline, startTime, deviceNum)
 % 2007/11/14 ADN rewrote it.
 % 2009/01/31 added deviceNum. might be necessary with button boxes on OSX.
 %
-% 2012      Modified by Kiefer Katovich so that it doesn't freeze the slide
+% 2012      Modified by Kiefer Katovich -- it doesn't freeze the slide
 %           when people hold down a button prior to when GetKey is called.
 %           This is usually not a problem but can really screw up
 %           time-sensitive experiments.

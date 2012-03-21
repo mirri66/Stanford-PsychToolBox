@@ -9,6 +9,7 @@
 %   filename        = the name of the csv file to be written/appended to
 %   rows            = a cellarray that contains the rows to be written
 %
+% 2012 -- Kiefer Katovich
 
 
 function IterativeCSVWriter(data_filepath, filename, rows)
