@@ -6,13 +6,8 @@
 %
 %   ARGUMENTS:
 %
-%   Window          = The ptb window
-%   duration        = duration the iti is presented, in seconds
-%   iti_object      = either a character string or psychtoolbox texture.
-%                     if a texture, there is (currently) only basic drawing
-%                     support.
-%   xpos (opt.)     = the x position to draw the text (not texture!)
-%   ypos (opt.)     = the y position to draw the text (not texture!)
+%   path_to_diaries = Where you want your diary files stored
+%   diary_file_name = desired name of diary file
 %
 %   2012 -- Grace Tang, tsmgrace@gmail.com
 
