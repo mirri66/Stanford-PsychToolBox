@@ -1,0 +1,5 @@
+Stanford-PsychToolBox
+
+Functions for use with PsychToolBox experiments in Matlab
+
+Download and add this folder to your search path with the addpath function
