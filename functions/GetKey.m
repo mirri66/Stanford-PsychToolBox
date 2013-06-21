@@ -1,4 +1,4 @@
-function [key,latency] = GetKeyFixed(keyStrings, deadline, startTime, deviceNum)
+function [key,latency] = GetKey(keyStrings, deadline, startTime, deviceNum)
 % %GetKey.m  Waits for any of a group of keys to be pressed.
 % %Usage [key,latency] = GetKey({'a','z'},5.000,GetSecs,[])
 %
@@ -28,14 +28,6 @@ function [key,latency] = GetKeyFixed(keyStrings, deadline, startTime, deviceNum)
 
 % 2007/11/14 ADN rewrote it.
 % 2009/01/31 added deviceNum. might be necessary with button boxes on OSX.
-%
-% 2012      Modified by Kiefer Katovich -- it doesn't freeze the slide
-%           when people hold down a button prior to when GetKey is called.
-%           This is usually not a problem but can really screw up
-%           time-sensitive experiments.
-%           Use the same as you would normally use GetKey original.
-
-funstart = GetSecs();
 
 if nargin<4 || isempty(deviceNum)
     deviceNum=[];
@@ -45,9 +37,7 @@ end
 keyListCoded = zeros(size(keyArr));
 
 if keyIsDown
-    while KbCheck(deviceNum) && ((GetSecs()-funstart) < deadline)
-        WaitSecs(.001); 
-    end
+    while KbCheck(deviceNum), WaitSecs(.001); end
 end
 
 if nargin<1 || isempty(keyStrings)
@@ -69,8 +59,7 @@ end
 % Check for keypress.
 keepChecking = 1;
 
-%while (keepChecking && (isempty(deadline) || press_time<(startTime+deadline)))
-while (keepChecking && (isempty(deadline) || (GetSecs()-funstart) < deadline))
+while (keepChecking && (isempty(deadline) || press_time<(startTime+deadline)))
     %poll the keyboard.
     [keyIsDown,press_time,keyArr] = KbCheck(deviceNum);
     %check if exactly one of the right keys is down.
@@ -88,6 +77,3 @@ else
     key = KbName(find(keyArr));
     latency = press_time - startTime;
 end
-
-
-

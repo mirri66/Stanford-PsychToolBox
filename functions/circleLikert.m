@@ -1,6 +1,6 @@
 % circleLikert
 % -----------
-% usage:  rating=circleLikert(c,[bottomtext],[scaletext],[colors],[slideposinit])
+% usage:  rating=circleLikert(c,[bottomtext],[scaletext],[colors],[slideposinit],[scanner])
 % Nine-point likert scale
 %
 % inputs:
@@ -11,6 +11,7 @@
 % of scale. Default = blank
 % - colors:  a vector of color values - default = rainbow
 % - slideposinit: where should the cursor start? default = 5 (the middle)
+% - scanner: if set to 1, keys are 1,2 and 3 instead of arrow keys and g
 % outputs
 % - rating: integer value representing position on scale that was selected
 %
@@ -27,6 +28,11 @@ if nargin>=2
             colors = varargin{3};
             if nargin>=5
                 slideposinit = varargin{4};
+                if nargin>=6
+                    scanner = varargin{5};
+                else
+                    scanner = 0;
+                end
             else
                 slideposinit = 5;
             end
@@ -71,25 +77,40 @@ c.qnHeight = 2*c.scrsz(4)/6;
 c.scaleHeight = 4*c.scrsz(4)/6;
 c.instrHeight = 5*c.scrsz(4)/6;
 
-circleRater(c,bottomtext,scaletext,colors,c.Window);
+circleRater(c,bottomtext,scaletext,colors,c.Window,scanner);
 
 
 while true
-    
-    key = GetKey({'RightArrow' 'LeftArrow' 'g'},[],[],-3);
-    
-    if sum(strcmp(key, 'RightArrow'))>0 && c.slidepos < c.numEls
-        c.slidepos = c.slidepos + 1;
-        circleRater(c,bottomtext,scaletext,colors,c.Window);
-        
-    elseif sum(strcmp(key, 'LeftArrow'))>0 && c.slidepos > 1
-        c.slidepos = c.slidepos - 1;
-        circleRater(c,bottomtext,scaletext,colors,c.Window);
-        
-    elseif sum(strcmp(key, 'g'))>0
-        
-        rating=c.slidepos;
-        break;
+    if scanner==1
+        key = GetKey({'1!' '2@' '3#'},[],[],-3);
+        if sum(strcmp(key, '2@'))>0 && c.slidepos < c.numEls
+            c.slidepos = c.slidepos + 1;
+            circleRater(c,bottomtext,scaletext,colors,c.Window,scanner);
+            
+        elseif sum(strcmp(key, '1!'))>0 && c.slidepos > 1
+            c.slidepos = c.slidepos - 1;
+            circleRater(c,bottomtext,scaletext,colors,c.Window,scanner);
+            
+        elseif sum(strcmp(key, '3#'))>0
+            
+            rating=c.slidepos;
+            break;
+        end
+    else
+        key = GetKey({'RightArrow' 'LeftArrow' 'g'},[],[],-3);
+        if sum(strcmp(key, 'RightArrow'))>0 && c.slidepos < c.numEls
+            c.slidepos = c.slidepos + 1;
+            circleRater(c,bottomtext,scaletext,colors,c.Window,scanner);
+            
+        elseif sum(strcmp(key, 'LeftArrow'))>0 && c.slidepos > 1
+            c.slidepos = c.slidepos - 1;
+            circleRater(c,bottomtext,scaletext,colors,c.Window,scanner);
+            
+        elseif sum(strcmp(key, 'g'))>0
+            
+            rating=c.slidepos;
+            break;
+        end
     end
     
 end

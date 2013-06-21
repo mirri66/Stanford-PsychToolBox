@@ -79,6 +79,9 @@ for i = 1:length(qnArr)
 
     end
 end
+fprintf('score: %g\n', score)
 
+savename = [c.exptname num2str(c.subjNo) '_FrostIndecisiveness.mat'];
+save(savename, 'score','rating');
 
 end

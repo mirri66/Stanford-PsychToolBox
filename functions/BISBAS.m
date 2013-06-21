@@ -123,5 +123,8 @@ fprintf('BASDrive: %g\n', BASDrive)
 fprintf('BASFS: %g\n', BASFS)
 fprintf('BASRewRes: %g\n', BASRewRes)
 fprintf('BIS: %g\n', BIS)
-
+savename = [c.exptname num2str(c.subjNo) '_BISBAS.mat'];
+save(savename, 'BASDrive','BASFS','BASRewRes','BIS');
 end
+
+

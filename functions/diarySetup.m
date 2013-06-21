@@ -1,9 +1,12 @@
 % diarySetup
+% ----------
 %
 %   Starts a diary. If diary by the same name already exists, appends a
 %   version number to the end of the filename so previous diary is not
 %   overwritten.
-%
+%   
+%   use: diarySetup(path_to_diaries, diary_file_name)
+%   
 %   ARGUMENTS:
 %
 %   path_to_diaries = Where you want your diary files stored

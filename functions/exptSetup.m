@@ -13,7 +13,9 @@ screenNumber = max(Screen('Screens')); % 0 = main display
 % screen / coordinates
 if max(Screen('Screens'))>0 %dual screen
     c.dual = get(0,'MonitorPositions');
-    c.scrsz = [0,0,(c.dual(2,3)-c.dual(2,1)),(c.dual(2,4)-c.dual(2,2))];
+   % c.scrsz = [0,0,(c.dual(2,3)-c.dual(2,1)),(c.dual(2,4)-c.dual(2,2))];
+    c.scrsz = [0,0,(c.dual(1,3)-c.dual(1,1)),(c.dual(1,4)-c.dual(1,2))];
+
 elseif max(Screen('Screens'))==0 % one screen
     c.scrsz = get(0,'ScreenSize') ;
 end

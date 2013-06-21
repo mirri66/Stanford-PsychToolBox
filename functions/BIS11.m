@@ -21,6 +21,9 @@
 
 
 function [score, attn, motor, nonplan, rating] = BIS11(c)
+
+fprintf('\n\nBIS11: \n\n')
+
 Screen('TextSize',c.Window,24);
 
 instr=['DIRECTIONS: People differ in the ways they act and think in different situations. '...
@@ -75,7 +78,7 @@ rating=[]; % initialize
 for qn = 1:length(qnArr)
     
     rating(qn) = fourPtLikert(c,qnArr{qn},legend);
-    
+    fprintf('Qn %g rating: %g \n', qn, rating(qn))
 end
 
 % compute score
@@ -112,5 +115,9 @@ for i = 1:30
     end
 end
 
+
+
+savename = [c.exptname num2str(c.subjNo)'_BIS11.mat'];
+save(savename,'score', 'attn', 'motor', 'nonplan', 'rating');
 
 end

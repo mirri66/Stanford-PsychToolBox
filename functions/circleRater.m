@@ -1,6 +1,6 @@
 % this function is called by circleLikert... see help for that instead
 
-function circleRater(c,bottomtext,scaletext,colors,Window) % k= which dimension you are measuring, e.g. valence = 1
+function circleRater(c,bottomtext,scaletext,colors,Window,scanner) % k= which dimension you are measuring, e.g. valence = 1
 % draw question
 Screen('TextSize',Window,34);
 DrawFormattedText(Window, bottomtext,'center',c.qnHeight,c.textColor);
@@ -33,8 +33,11 @@ for y=1:3
 end
 %draw instruction
 Screen('TextSize',Window,28);
+if scanner==1
+DrawFormattedText(Window, 'Move the indicator with ''1'' and ''2'', then press ''3'' to confirm', 'center', c.instrHeight,c.textColor);
+else
 DrawFormattedText(Window, 'Move the indicator with the arrow keys, then press ''g'' to confirm', 'center', c.instrHeight,c.textColor);
-
+end
 Screen('Flip',Window);
 end
 
