@@ -18,6 +18,7 @@
 function [b,a,datamat] = HuettelRisk(c)
 
 scanner = 0;
+xx.debugFlag=0; % 1 for debug mode - gets rid of a lot of waiting
 
 % Print a loading screen
 DrawFormattedText(c.Window, 'Loading -- the experiment will begin shortly','center','center',250);
@@ -69,8 +70,6 @@ trialMat = [
     2 20 4 0.75 2 50 10 0.25 % risky vs risky
     3 35 0 0.25 1 12 0 1 % ambig vs certain
     3 35 0 0.25 2 20 12 0.25 % ambig vs risky
-    
-    
     ];
 
 
@@ -80,23 +79,54 @@ HideCursor; % Remember to type ShowCursor or sca later
 
 %% the study::
 
+hSide1 = c.hPosition/2-c.radius;
+hSide2 = c.hPosition/2-c.radius;
+wrap = 80;
+instrCircleVdisplace = c.vPosition/11;
 % Instructions
 DrawFormattedText(c.Window, ['In each trial of this task, you will be asked to indicate your preference between two options. '...
-    'Some options will lead to a fixed amount of money. For example, when you see a circle like this:'...
-    ],c.hPosition/3,'center',250,50, [],[],2);
+    'Some options will lead to a fixed amount of money. For example, when you see a circle like this:'],c.hPosition/6,c.vPosition/9,250,wrap, [],[],1);
+Screen('FillOval', c.Window, c.borderColor, [hSide1-c.radius*c.outerradius, c.vPosition/2-c.radius-c.radius*c.outerradius+instrCircleVdisplace,hSide1+c.radius*2+c.radius*c.outerradius, c.vPosition/2+c.radius+c.radius*c.outerradius+instrCircleVdisplace])
+Screen('FillArc', c.Window, [250 0 0], [hSide1, c.vPosition/2-c.radius+instrCircleVdisplace,hSide1+c.radius*2, c.vPosition/2+c.radius+instrCircleVdisplace], 0, 360)
+Screen('DrawText', c.Window, ['$' num2str(50,'%#4.2f')], hSide1+c.radius*0.8, c.vPosition/2+instrCircleVdisplace, c.blackText);
 
-
-DrawFormattedText(c.Window, ['This means you will get $50 for sure.'],2*c.hPosition/3,'center',250,100, [],[],2);
+DrawFormattedText(c.Window, ['This means you will get $50 for sure if you choose it.'],c.hPosition/6,18*c.vPosition/20,250,wrap, [],[],1);
+DrawFormattedText(c.Window, ['Press ''g'' to continue.'],c.hPosition/6,19*c.vPosition/20,250,wrap, [],[],1);
 Screen('Flip',c.Window);
 GetKey('g',[],[],-3);
 
-DrawFormattedText(c.Window, [
-    'Others will have two sums of money,  '...
-    'Out of the choices you make on this task, one will be chosen at random to count for real. \n\n'...
+
+DrawFormattedText(c.Window, ['Others options will have more than one sum of money. If you see a circle like this: '],c.hPosition/6,c.vPosition/8,250,wrap, [],[],1);
+Screen('FillOval', c.Window, c.borderColor, [hSide1-c.radius*c.outerradius, c.vPosition/2-c.radius-c.radius*c.outerradius+instrCircleVdisplace,hSide1+c.radius*2+c.radius*c.outerradius, c.vPosition/2+c.radius+c.radius*c.outerradius+instrCircleVdisplace])
+
+Screen('FillArc', c.Window, [250 0 0], [hSide1, c.vPosition/2-c.radius+instrCircleVdisplace,hSide1+c.radius*2, c.vPosition/2+c.radius+instrCircleVdisplace], 0, 0.25*360)
+Screen('FillArc', c.Window, [0 250 0], [hSide1, c.vPosition/2-c.radius+instrCircleVdisplace,hSide1+c.radius*2, c.vPosition/2+c.radius+instrCircleVdisplace], 0.25*360, 0.75*360)
+Screen('DrawText', c.Window, ['$' num2str(12,'%#4.2f')], hSide1+0.8*c.radius/2, c.vPosition/2-0.7*c.radius/2*((0.25-0.5)/0.25)+instrCircleVdisplace, c.blackText);
+Screen('DrawText', c.Window, ['$' num2str(20,'%#4.2f')], hSide1+c.radius*1.5*0.8, c.vPosition/2+0.7*c.radius/2*((0.25-0.5)/0.25)+instrCircleVdisplace, c.blackText);
+
+DrawFormattedText(c.Window, ['If you choose this, you will have a 25% chance of winning $20, or a 75% chance of winning $12.'],c.hPosition/6,17*c.vPosition/20,250,wrap, [],[],1);
+DrawFormattedText(c.Window, ['Press ''g'' to continue.'],c.hPosition/6,19*c.vPosition/20,250,wrap, [],[],1);
+Screen('Flip',c.Window);
+GetKey('g',[],[],-3);
+
+DrawFormattedText(c.Window, ['Sometimes you will not know the probability of winning each sum. When you see a circle like this:'],c.hPosition/6,c.vPosition/8,250,wrap, [],[],1);
+Screen('FillOval', c.Window, c.borderColor, [hSide1-c.radius*c.outerradius, c.vPosition/2-c.radius-c.radius*c.outerradius+instrCircleVdisplace,hSide1+c.radius*2+c.radius*c.outerradius, c.vPosition/2+c.radius+c.radius*c.outerradius+instrCircleVdisplace])
+
+Screen('FillOval', c.Window, [100 100 100], [hSide1, c.vPosition/2-c.radius+instrCircleVdisplace,hSide1+c.radius*2, c.vPosition/2+c.radius+instrCircleVdisplace])
+Screen('DrawText', c.Window, '?', hSide1+c.radius, c.vPosition/2+instrCircleVdisplace, c.blackText);
+Screen('DrawText', c.Window, ['$' num2str(35,'%#4.2f')], hSide1-c.radius*c.outerradius, c.vPosition/2-c.radius-c.radius*c.outerradius*2+instrCircleVdisplace, c.textColor);
+Screen('DrawText', c.Window, ['$' num2str(0,'%#4.2f')], hSide1+2*c.radius+c.radius*c.outerradius, c.vPosition/2+c.radius-c.radius*c.outerradius*2+instrCircleVdisplace, c.textColor);
+
+DrawFormattedText(c.Window, ['If you choose this, you will have an unknown chance of winning $35 or $0.'],c.hPosition/6,18*c.vPosition/20,250,wrap, [],[],1);
+DrawFormattedText(c.Window, ['Press ''g'' to continue.'],c.hPosition/6,19*c.vPosition/20,250,wrap, [],[],1);
+Screen('Flip',c.Window);
+GetKey('g',[],[],-3);
+
+DrawFormattedText(c.Window, ['Out of the choices you make on this task, one will be chosen at random to count for real. \n\n'...
     'Please treat each choice as if it counts for real. Bear in mind that only ONE choice will be selected to count for real, '...
     'therefore treat each choice as if it were the only one being presented to you. \n\n'...
     'Please respond as quickly as possible, and try to go with your gut feeling. \n\n'...
-    'Press ''g'' to begin.'],'center','center',250,50, [],[],2);
+    'Press ''g'' to begin.'],'center','center',250,wrap, [],[],2);
 Screen('Flip',c.Window);
 GetKey('g',[],[],-3);
 
@@ -163,7 +193,7 @@ end
 fprintf('\nopt1type: %g, opt1val1: %g, opt1val2: %g, opt1prob: %g\n', opt1type, opt1val1, opt1val2, opt1prob);
 fprintf('opt2type: %g, opt2val1: %g, opt2val2: %g, opt2prob: %g\n', opt2type, opt2val1, opt2val2, opt2prob);
 
-
+% %%%% draw choices %%%% %
 % outer circles
 Screen('FillOval', c.Window, c.borderColor, [c.hPosR-c.radius*c.outerradius, c.vPosition/2-c.radius-c.radius*c.outerradius,c.hPosR+c.radius*2+c.radius*c.outerradius, c.vPosition/2+c.radius+c.radius*c.outerradius])
 Screen('FillOval', c.Window, c.borderColor, [c.hPosL-c.radius*c.outerradius, c.vPosition/2-c.radius-c.radius*c.outerradius,c.hPosL+c.radius*2+c.radius*c.outerradius, c.vPosition/2+c.radius+c.radius*c.outerradius])
@@ -241,9 +271,59 @@ ons_start = GetSecs;
 nChoiceMadeOnset = ons_start - xx.startTime;
 fprintf('choice made: %g\n',nChoiceMadeOnset);
 
-% wheel spin
-%spinTime = randi(3,1)*c.TR;
-spinTime=1;
+% %%%% delay %%%% %
+% outer circles
+Screen('FillOval', c.Window, c.borderColor, [c.hPosR-c.radius*c.outerradius, c.vPosition/2-c.radius-c.radius*c.outerradius,c.hPosR+c.radius*2+c.radius*c.outerradius, c.vPosition/2+c.radius+c.radius*c.outerradius])
+Screen('FillOval', c.Window, c.borderColor, [c.hPosL-c.radius*c.outerradius, c.vPosition/2-c.radius-c.radius*c.outerradius,c.hPosL+c.radius*2+c.radius*c.outerradius, c.vPosition/2+c.radius+c.radius*c.outerradius])
+
+% original choice circles
+if opt1type == 1 % certain
+    Screen('FillArc', c.Window, [250*color1 250*(1-color1) 0], [hSide1, c.vPosition/2-c.radius,hSide1+c.radius*2, c.vPosition/2+c.radius], 0, opt1prob*360)
+    Screen('DrawText', c.Window, ['$' num2str(opt1val1,'%#4.2f')], hSide1+c.radius*0.8, c.vPosition/2, c.blackText);
+elseif opt1type == 2 % risky
+    Screen('FillArc', c.Window, [250*color1 250*(1-color1) 0], [hSide1, c.vPosition/2-c.radius,hSide1+c.radius*2, c.vPosition/2+c.radius], 0, opt1prob*360)
+    Screen('FillArc', c.Window, [250*(1-color1) 250*color1 0], [hSide1, c.vPosition/2-c.radius,hSide1+c.radius*2, c.vPosition/2+c.radius], opt1prob*360, (1-opt1prob)*360)
+    Screen('DrawText', c.Window, ['$' num2str(opt1val2,'%#4.2f')], hSide1+0.8*c.radius/2, c.vPosition/2-0.7*c.radius/2*((opt1prob-0.5)/0.25), c.blackText);
+    Screen('DrawText', c.Window, ['$' num2str(opt1val1,'%#4.2f')], hSide1+c.radius*1.5*0.8, c.vPosition/2+0.7*c.radius/2*((opt1prob-0.5)/0.25), c.blackText);
+elseif opt1type == 3 % ambig -- reveal
+    Screen('FillArc', c.Window, [250*color1 250*(1-color1) 0], [hSide1, c.vPosition/2-c.radius,hSide1+c.radius*2, c.vPosition/2+c.radius], 0, opt1prob*360)
+    Screen('FillArc', c.Window, [250*(1-color1) 250*color1 0], [hSide1, c.vPosition/2-c.radius,hSide1+c.radius*2, c.vPosition/2+c.radius], opt1prob*360, (1-opt1prob)*360)
+    Screen('DrawText', c.Window, ['$' num2str(opt1val2,'%#4.2f')], hSide1+0.8*c.radius/2, c.vPosition/2-0.7*c.radius/2*((opt1prob-0.5)/0.25), c.blackText);
+    Screen('DrawText', c.Window, ['$' num2str(opt1val1,'%#4.2f')], hSide1+c.radius*1.5*0.8, c.vPosition/2+0.7*c.radius/2*((opt1prob-0.5)/0.25), c.blackText);
+end
+
+
+if opt2type == 1 % certain
+    Screen('FillArc', c.Window, [250*color2 250*(1-color2) 0], [hSide2, c.vPosition/2-c.radius,hSide2+c.radius*2, c.vPosition/2+c.radius], 0, opt2prob*360)
+    Screen('DrawText', c.Window, ['$' num2str(opt2val1,'%#4.2f')], hSide2+c.radius*0.8, c.vPosition/2, c.blackText);
+elseif opt2type == 2 % risky
+    Screen('FillArc', c.Window, [250*color2 250*(1-color2) 0], [hSide2, c.vPosition/2-c.radius,hSide2+c.radius*2, c.vPosition/2+c.radius], 0, opt2prob*360)
+    Screen('FillArc', c.Window, [250*(1-color2) 250*color2 0], [hSide2, c.vPosition/2-c.radius,hSide2+c.radius*2, c.vPosition/2+c.radius], opt2prob*360, (1-opt2prob)*360)
+    Screen('DrawText', c.Window, ['$' num2str(opt2val2,'%#4.2f')], hSide2+0.8*c.radius/2, c.vPosition/2-0.7*c.radius/2*((opt2prob-0.5)/0.25), c.blackText);
+    Screen('DrawText', c.Window, ['$' num2str(opt2val1,'%#4.2f')], hSide2+c.radius*1.5*0.8, c.vPosition/2+0.7*c.radius/2*((opt2prob-0.5)/0.25), c.blackText);
+elseif opt2type == 3 % ambig -- reveal
+    Screen('FillArc', c.Window, [250*color1 250*(1-color1) 0], [hSide2, c.vPosition/2-c.radius,hSide1+c.radius*2, c.vPosition/2+c.radius], 0, opt2prob*360)
+    Screen('FillArc', c.Window, [250*(1-color1) 250*color1 0], [hSide2, c.vPosition/2-c.radius,hSide1+c.radius*2, c.vPosition/2+c.radius], opt2prob*360, (1-opt2prob)*360)
+    Screen('DrawText', c.Window, ['$' num2str(opt1val2,'%#4.2f')], hSide2+0.8*c.radius/2, c.vPosition/2-0.7*c.radius/2*((opt2prob-0.5)/0.25), c.blackText);
+    Screen('DrawText', c.Window, ['$' num2str(opt1val1,'%#4.2f')], hSide2+c.radius*1.5*0.8, c.vPosition/2+0.7*c.radius/2*((opt2prob-0.5)/0.25), c.blackText);
+end
+
+% square to indicate chosen side
+Screen('FrameRect', c.Window, [0 0 255], [hChosenSide-c.radius*c.outerradius*2, c.vPosition/2-c.radius-c.radius*c.outerradius*2,hChosenSide+c.radius*2+c.radius*c.outerradius*2, c.vPosition/2+c.radius+c.radius*c.outerradius*2],2)
+Screen('Flip',c.Window);
+
+if xx.debugFlag == 1
+    WaitSecs(0);
+else
+    WaitSecs(2);
+end
+
+% %%%% wheel spin %%%% %
+if xx.debugFlag == 1
+    spinTime=1;
+else
+    spinTime = randi(3,1)*c.TR;
+end
 
 spinSpeedL = (rand*5+5)/360*pi; % random speed (range 5-10 degrees per frame)
 spinStartL = rand*2*pi; % random starting position
@@ -346,8 +426,8 @@ elseif opt2type == 3 % ambig -- reveal
 end
 
 % square to indicate chosen side
-    Screen('FrameRect', c.Window, [0 0 255], [hChosenSide-c.radius*c.outerradius*2, c.vPosition/2-c.radius-c.radius*c.outerradius*2,hChosenSide+c.radius*2+c.radius*c.outerradius*2, c.vPosition/2+c.radius+c.radius*c.outerradius*2],2)
-    
+Screen('FrameRect', c.Window, [0 0 255], [hChosenSide-c.radius*c.outerradius*2, c.vPosition/2-c.radius-c.radius*c.outerradius*2,hChosenSide+c.radius*2+c.radius*c.outerradius*2, c.vPosition/2+c.radius+c.radius*c.outerradius*2],2)
+
 
 Screen('FillOval', c.Window, [0 0 0], [currentXPosL-c.rouletteRadius, currentYPosL-c.rouletteRadius,currentXPosL+c.rouletteRadius, currentYPosL+c.rouletteRadius])
 Screen('FillOval', c.Window, [0 0 0], [currentXPosR-c.rouletteRadius, currentYPosR-c.rouletteRadius,currentXPosR+c.rouletteRadius, currentYPosR+c.rouletteRadius])
@@ -406,14 +486,20 @@ nOutcomeShown = ons_start - xx.startTime;
 fprintf('outcome revealed: %g\n',nOutcomeShown);
 
 Screen('Flip',c.Window);
-%WaitSecs(2);
-GetKey({'f','j'},[],[],-3);
+if xx.debugFlag == 1
+    GetKey({'f','j'},[],[],-3);
+else
+    WaitSecs(2);
+end
 
 % fixation
 DrawFormattedText(c.Window, '+','center','center',250,100);
 Screen('Flip',c.Window);
-%ITI = randi(3,1)*c.TR;
-ITI=0; % debug
+if xx.debugFlag==1
+    ITI=0; % debug mode
+else
+    ITI = randi(3,1)*c.TR;
+end
 WaitSecs(ITI);
 
 % store stuff
