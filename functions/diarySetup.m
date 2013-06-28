@@ -17,13 +17,14 @@
 
 function diarySetup(path_to_diaries, diary_file_name)
 
+prefixLen = length(diary_file_name);
 orig_path = pwd;
 % diary
 cd(path_to_diaries);
 nD=0;
 while exist(diary_file_name)
     nD = nD+1;
-    diary_file_name = [diary_file_name '_' num2str(nD)];
+    diary_file_name = [diary_file_name(1:prefixLen) '_' num2str(nD)];
 end
 diary(diary_file_name);
 
