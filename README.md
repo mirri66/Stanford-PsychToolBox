@@ -21,10 +21,19 @@ PsychToolBox is available at psychtoolbox.org
 Functions
 ---------
 
-GetKey
+Basic:
+Four/Five point likert
+IterativeCSVWriter - saves each trial of experiments to a csv file
+circle likert scale - a likert scale, but with circles vs just plain numbers
+diarysetup - saves console output
+GetKey - makes kbcheck easier to use for collecting responses
+GTgetechostring (same as PTB's getechostring, but fixed some bugs)
 
-Questionnaires
+Tasks:
+Temporal discounting
+Huettel risk/ambiguity task
+
+Questionnaires:
 BIS11
 BISBAS
 Frost Indecisiveness
-Temporal discounting
